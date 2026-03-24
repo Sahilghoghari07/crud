@@ -1,0 +1,55 @@
+{
+  "country": [
+    {
+      "name": "India",
+      "state": [
+        {
+          "name": "Gujarat",
+          "city": ["Surat", "Ahemdabad", "Vadodara"]
+        },
+        {
+          "name": "Maharashtra",
+          "city": ["Mumbai", "Pune", "Nagpur"]
+        },
+        {
+          "name": "Rajasthan",
+          "city": ["Jaipur", "Udaipur", "Jodhpur"]
+        }
+      ]
+    },
+    {
+      "name": "United States",
+      "state": [
+        {
+          "name": "California",
+          "city": ["Los Angeles", "San Francisco", "San Diego"]
+        },
+        {
+          "name": "Texas",
+          "city": ["Houston", "Dallas", "Austin"]
+        },
+        {
+          "name": "Florida",
+          "city": ["Miami", "Orlando", "Tampa"]
+        }
+      ]
+    },
+    {
+      "name": "Australia",
+      "state": [
+        {
+          "name": "New South Wales",
+          "city": ["Sydney", "Newcastle", "Wollongong"]
+        },
+        {
+          "name": "Victoria",
+          "city": ["Melbourne", "Geelong", "Ballarat"]
+        },
+        {
+          "name": "Queensland",
+          "city": ["Brisbane", "Gold Coast", "Cairns"]
+        }
+      ]
+    }
+  ]
+}
