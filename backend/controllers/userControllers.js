@@ -3,7 +3,7 @@ require("dotenv").config({ quiet: true });
 
 const JSON_API_URL = process.env.JSON_API_URL;
 
-exports.getUsers = async (req, res) => {
+exports.getUsers = async (req, res, next) => {
   try {
     const users = await axios.get(`${JSON_API_URL}`);
     res.status(200).json({
@@ -12,15 +12,11 @@ exports.getUsers = async (req, res) => {
       data: users.data,
     });
   } catch (err) {
-    res.status(500).json({
-      error: err.message,
-      message: "Internal server error",
-      data: null,
-    });
+    next(err);
   }
 };
 
-exports.addUser = async (req, res) => {
+exports.addUser = async (req, res, next) => {
   try {
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({ message: "Give body data!", data: null });
@@ -34,17 +30,11 @@ exports.addUser = async (req, res) => {
       data: newUser.data,
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        error: err.message,
-        message: "Internal server error",
-        data: null,
-      });
+    next(err);
   }
 };
 
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -55,17 +45,11 @@ exports.updateUser = async (req, res) => {
       data: updatedUser.data,
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        error: err.message,
-        message: "Internal server error",
-        data: null,
-      });
+    next(err);
   }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -76,12 +60,6 @@ exports.deleteUser = async (req, res) => {
       data: deletedUser.data,
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        error: err.message,
-        message: "Internal server error",
-        data: null,
-      });
+    next(err);
   }
 };
