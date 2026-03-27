@@ -152,7 +152,7 @@ function Form() {
 
   // update user
   const handleUpdate = async (id) => {
-    const user = users?.find((u) => u.id === id);
+    const user = users?.find((u) => u._id === id);
     setEditId(id);
 
     if (user) {
@@ -431,7 +431,7 @@ function Form() {
                   checked={isSelectedAll}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedIds(users?.map((u) => u.id));
+                      setSelectedIds(users?.map((u) => u._id));
                     } else {
                       setSelectedIds([]);
                     }
@@ -456,15 +456,15 @@ function Form() {
         <tbody>
           {users?.length > 0 ? (
             users.map((user) => (
-              <tr key={user.id} className="border-b border-b-gray-400">
+              <tr key={user._id} className="border-b border-b-gray-400">
                 <td className="px-4 py-2">
                   <input
                     type="checkbox"
                     className="h-4 w-4 cursor-pointer"
-                    checked={selectedIds.includes(user.id)}
+                    checked={selectedIds.includes(user._id)}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedIds((prev) => [...prev, user.id]);
+                        setSelectedIds((prev) => [...prev, user._id]);
                       } else {
                         setSelectedIds((prev) =>
                           prev.filter((id) => id !== user.id),
@@ -473,7 +473,7 @@ function Form() {
                     }}
                   />
                 </td>
-                <td className="px-4 py-2">{user.id}</td>
+                <td className="px-4 py-2">{user._id}</td>
                 <td className="px-4 py-2 font-medium">{`${user.firstName} ${user.lastName}`}</td>
                 <td className="px-4 py-2">{user.dateOfBirth}</td>
                 <td className="px-4 py-2">{user.gender}</td>
@@ -484,13 +484,13 @@ function Form() {
                 <td className="px-4 py-2">{user.address}</td>
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => handleUpdate(user.id)}
+                    onClick={() => handleUpdate(user._id)}
                     className="bg-yellow-500 hover:bg-yellow-600 cursor-pointer rounded p-2"
                   >
                     <BsPencilSquare />
                   </button>
                   <button
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(user._id)}
                     className="bg-red-500 hover:bg-red-600 text-white cursor-pointer rounded p-2 ms-1"
                   >
                     <IoTrash />
