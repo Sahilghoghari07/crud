@@ -13,9 +13,10 @@ const userSchema = mongoose.Schema(
       trim: true,
     },
     dateOfBirth: {
-      type: Date,
+      type: String,
       required: true,
-      max: Date.now(),
+      match: /^\d{2}-\d{2}-\d{4}$/,
+      max: [Date.now, "Date of birth can not be in future!"],
     },
     hobby: {
       type: [String],

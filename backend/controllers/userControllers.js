@@ -1,17 +1,26 @@
-// const axios = require("axios");
 const User = require("../models/userModel");
 require("dotenv").config({ quiet: true });
 
-const JSON_API_URL = process.env.JSON_API_URL;
-
 exports.getUsers = async (req, res, next) => {
   try {
-    // const users = await axios.get(`${JSON_API_URL}`);
     const users = await User.find();
+
+    const formattedUser = users.map((u) => {
+      const date = new Date(u.dateOfBirth);
+
+      const mm = ("0" + (date.getMonth() + 1)).slice(-2);
+      const dd = ("0" + date.getDate()).slice(-2);
+
+      return {
+        ...u._doc,
+        dateOfBirth: `${date.getFullYear()}-${mm}-${dd}`,
+      };
+    });
+
     res.status(200).json({
       error: null,
       message: "Users fetched Successfully",
-      data: users,
+      data: formattedUser,
     });
   } catch (err) {
     next(err);
@@ -20,12 +29,22 @@ exports.getUsers = async (req, res, next) => {
 
 exports.addUser = async (req, res, next) => {
   try {
+    const { dateOfBirth } = req.body;
+
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({ message: "Give body data!", data: null });
     }
 
-    // const newUser = await axios.post(`${JSON_API_URL}`, req.body);
-    const newUser = await User.create(req.body);
+    const date = new Date(dateOfBirth);
+
+    const dd = ("0" + date.getDate()).slice(-2);
+    const mm = ("0" + (date.getMonth() + 1)).slice(-2);
+    FormattedDateOfBirth = `${dd}-${mm}-${date.getFullYear()}`;
+
+    const newUser = await User.create({
+      ...req.body,
+      dateOfBirth: FormattedDateOfBirth,
+    });
 
     res.status(201).json({
       error: null,
@@ -41,7 +60,6 @@ exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // const updatedUser = await axios.put(`${JSON_API_URL}/${id}`, req.body);
     const updatedUser = await User.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -59,7 +77,6 @@ exports.deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // const deletedUser = await axios.delete(`${JSON_API_URL}/${id}`);
     const deletedUser = await User.findByIdAndDelete(id);
     res.status(200).json({
       error: null,
