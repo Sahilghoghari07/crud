@@ -5,22 +5,20 @@ exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
 
-    const formattedUser = users.map((u) => {
-      const date = new Date(u.dateOfBirth);
-
-      const mm = ("0" + (date.getMonth() + 1)).slice(-2);
-      const dd = ("0" + date.getDate()).slice(-2);
+    users.map((u) => {
+      const date = u.dateOfBirth;
+      const [day, month, year] = date.split("-");
 
       return {
-        ...u._doc,
-        dateOfBirth: `${date.getFullYear()}-${mm}-${dd}`,
+        ...u,
+        dateOfBirth: `${year}-${month}-${day}`,
       };
     });
 
     res.status(200).json({
       error: null,
       message: "Users fetched Successfully",
-      data: formattedUser,
+      data: users,
     });
   } catch (err) {
     next(err);
@@ -39,11 +37,11 @@ exports.addUser = async (req, res, next) => {
 
     const dd = ("0" + date.getDate()).slice(-2);
     const mm = ("0" + (date.getMonth() + 1)).slice(-2);
-    FormattedDateOfBirth = `${dd}-${mm}-${date.getFullYear()}`;
+    const updatedDate = `${dd}-${mm}-${date.getFullYear()}`;
 
     const newUser = await User.create({
       ...req.body,
-      dateOfBirth: FormattedDateOfBirth,
+      dateOfBirth: updatedDate,
     });
 
     res.status(201).json({

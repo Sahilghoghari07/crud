@@ -467,7 +467,7 @@ function Form() {
                         setSelectedIds((prev) => [...prev, user._id]);
                       } else {
                         setSelectedIds((prev) =>
-                          prev.filter((id) => id !== user.id),
+                          prev.filter((id) => id !== user._id),
                         );
                       }
                     }}
