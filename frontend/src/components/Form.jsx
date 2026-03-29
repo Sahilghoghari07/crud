@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import dataJson from "../data.json";
 import { BsPencilSquare } from "react-icons/bs";
 import { IoTrash } from "react-icons/io5";
@@ -156,7 +158,14 @@ function Form() {
     setEditId(id);
 
     if (user) {
-      setFormData(user);
+      let formattedDate = "";
+
+      if (user.dateOfBirth) {
+        const [dd, mm, yyyy] = user.dateOfBirth.split("-");
+        formattedDate = `${yyyy}-${mm}-${dd}`;
+      }
+
+      setFormData({ ...user, dateOfBirth: formattedDate });
 
       const selectedCountry = data.country.find((c) => c.name === user.country);
       setStates(selectedCountry?.state || []);
@@ -242,13 +251,33 @@ function Form() {
             <label htmlFor="dateOfBirth" className="mb-1 font-medium">
               DOB <span className="text-red-500">*</span>
             </label>
-            <input
-              type="date"
-              name="dateOfBirth"
+            <DatePicker
               id="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
-              className={`border border-gray-300 focus:border-blue-400 outline-none rounded px-3 py-1.5 ${errors.dateOfBirth ? "border-red-400" : ""}`}
+              selected={
+                formData.dateOfBirth ? new Date(formData.dateOfBirth) : null
+              }
+              onChange={(date) => {
+                if (!date) return;
+
+                const yyyy = date.getFullYear();
+                const mm = ("0" + (date.getMonth() + 1)).slice(-2);
+                const dd = ("0" + date.getDate()).slice(-2);
+
+                setFormData({
+                  ...formData,
+                  dateOfBirth: `${yyyy}-${mm}-${dd}`,
+                });
+              }}
+              dateFormat="dd-MM-yyyy"
+              placeholderText="dd/mm/yyyy"
+              onKeyDown={(e) => e.preventDefault()}
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              maxDate={new Date()}
+              className={`w-100 border border-gray-300 focus:border-blue-400 outline-none rounded px-3 py-1.5 ${errors.dateOfBirth ? "border-red-400" : ""}`}
+              popperClassName="z-50"
+              calendarClassName="rounded-lg shadow-lg border border-gray-200"
             />
             {errors.dateOfBirth && (
               <p className="text-red-400 text-sm">{errors.dateOfBirth}</p>
