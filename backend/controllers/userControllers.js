@@ -5,16 +5,6 @@ exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
 
-    users.map((u) => {
-      const date = u.dateOfBirth;
-      const [day, month, year] = date.split("-");
-
-      return {
-        ...u,
-        dateOfBirth: `${year}-${month}-${day}`,
-      };
-    });
-
     res.status(200).json({
       error: null,
       message: "Users fetched Successfully",
@@ -33,11 +23,8 @@ exports.addUser = async (req, res, next) => {
       return res.status(400).json({ message: "Give body data!", data: null });
     }
 
-    const date = new Date(dateOfBirth);
-
-    const dd = ("0" + date.getDate()).slice(-2);
-    const mm = ("0" + (date.getMonth() + 1)).slice(-2);
-    const updatedDate = `${dd}-${mm}-${date.getFullYear()}`;
+    const [yyyy, mm, dd] = dateOfBirth.split("-");
+    const updatedDate = `${dd}-${mm}-${yyyy}`;
 
     const newUser = await User.create({
       ...req.body,
@@ -57,9 +44,15 @@ exports.addUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
+    let updatedData = { ...req.body };
 
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
+    if (updatedData.dateOfBirth) {
+      const [yyyy, mm, dd] = updatedData.dateOfBirth.split("-");
+      updatedData.dateOfBirth = `${dd}-${mm}-${yyyy}`;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
+      returnDocument: "after",
     });
     res.status(200).json({
       error: null,

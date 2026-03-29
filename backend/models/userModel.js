@@ -16,7 +16,14 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       match: /^\d{2}-\d{2}-\d{4}$/,
-      max: [Date.now, "Date of birth can not be in future!"],
+      validate: {
+        validator: function (value) {
+          const [dd, mm, yyyy] = value.split("-");
+          const inputDate = new Date(`${yyyy}-${mm}-${dd}`);
+          return inputDate <= new Date();
+        },
+        message: "Date of birth cannot be in the future!",
+      },
     },
     hobby: {
       type: [String],
