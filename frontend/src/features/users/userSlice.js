@@ -1,14 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addUser, deleteUser, fetchUsers, updateUser } from "./userThunk";
+import {
+  addUser,
+  deleteUser,
+  fetchUsers,
+  register,
+  updateUser,
+} from "./userThunk";
 
 export const userSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
+    userRole: [],
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      //REGISTER
+      .addCase(register.fulfilled, (state, action) => {
+        state.userRole = action.payload;
+      })
       // FETCH
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.users = action.payload;
