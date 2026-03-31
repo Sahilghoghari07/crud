@@ -3,7 +3,7 @@ import {
   addUser,
   deleteUser,
   fetchUsers,
-  register,
+  login,
   updateUser,
 } from "./userThunk";
 
@@ -11,27 +11,31 @@ export const userSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
-    userRole: [],
+    user: null,
   },
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      localStorage.clear();
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      //REGISTER
-      .addCase(register.fulfilled, (state, action) => {
-        state.userRole = action.payload;
+      //LOGIN
+      .addCase(login.fulfilled, (state, action) => {
+        state.user = action.payload;
       })
+
       // FETCH
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.users = action.payload;
       })
+
       // ADD
       .addCase(addUser.fulfilled, (state, action) => {
-        const exists = state.users.some((u) => u._id === action.payload._id);
-
-        if (!exists) {
-          state.users.push(action.payload);
-        }
+        state.users.push(action.payload);
       })
+
       // UPDATE
       .addCase(updateUser.fulfilled, (state, action) => {
         const index = state.users.findIndex(
@@ -41,6 +45,7 @@ export const userSlice = createSlice({
           state.users[index] = action.payload;
         }
       })
+
       // DELETE
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.users = state.users.filter((u) => u._id !== action.payload);
@@ -48,4 +53,5 @@ export const userSlice = createSlice({
   },
 });
 
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;

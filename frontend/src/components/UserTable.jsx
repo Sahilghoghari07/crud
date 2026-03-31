@@ -13,6 +13,8 @@ function UserTable({
   const isSelectedAll =
     users?.length > 0 && selectedIds.length === users.length;
 
+  const role = localStorage.getItem("role");
+
   return (
     <>
       <table className="w-full text-center border border-gray-200 rounded-lg overflow-hidden shadow-xl mt-6 ">
@@ -84,12 +86,14 @@ function UserTable({
                   >
                     <BsPencilSquare />
                   </button>
-                  <button
-                    onClick={() => handleDelete(user._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white cursor-pointer rounded p-2 ms-1"
-                  >
-                    <IoTrash />
-                  </button>
+                  {role === "admin" && (
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="bg-red-500 hover:bg-red-600 text-white cursor-pointer rounded p-2 ms-1"
+                    >
+                      <IoTrash />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))

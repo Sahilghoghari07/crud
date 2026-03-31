@@ -1,16 +1,21 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config({ quiet: true });
+
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { errorHandler } = require("./middlewares/errorHandler");
-const connectDB = require("./config/db");
+
 const app = express();
-require("dotenv").config({ quiet: true });
 
 app.use(cors());
 app.use(express.json());
-app.use("/users", userRoutes);
 
 connectDB();
+
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 app.use(errorHandler); //global middlewares at last
 

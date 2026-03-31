@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "../features/users/userThunk";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
+   const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    dispatch(register());
+
+    const res = await dispatch(register(form));
+
+    if (res.meta.requestStatus === "fulfilled") {
+      alert("Registered Successfully!");
+      navigate("/login"); 
+    } else {
+      alert(res.payload?.message || "Register Failed");
+    }
   };
 
   return (
@@ -22,6 +37,7 @@ function Register() {
               type="text"
               name="userName"
               id="userName"
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
               className="border border-gray-300 focus:border-blue-300 outline-none rounded px-3 py-1.5"
             />
           </div>
@@ -33,9 +49,11 @@ function Register() {
               type="password"
               name="password"
               id="password"
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="border border-gray-300 focus:border-blue-300 outline-none rounded px-3 py-1.5"
             />
           </div>
+          <p>Already have an Account? <a href="/login">login here</a></p>
           <div className="mt-3">
             <button
               type="submit"
