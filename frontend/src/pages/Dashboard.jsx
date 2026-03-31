@@ -137,7 +137,7 @@ function Dashboard() {
     try {
       if (editId) {
         // update user
-        dispatch(updateUser({ id: editId, data: formData }));
+        dispatch(updateUser({ editId, formData }));
       } else {
         // add user
         dispatch(addUser(formData));
@@ -190,6 +190,8 @@ function Dashboard() {
     try {
       await dispatch(deleteUser(id)).unwrap();
     } catch (err) {
+      console.error(err);
+
       alert("Delete failed");
     }
   };
@@ -203,6 +205,8 @@ function Dashboard() {
 
       setSelectedIds([]);
     } catch (err) {
+      console.error(err);
+
       alert("Delete Failed!");
     }
   };
@@ -217,7 +221,7 @@ function Dashboard() {
     <>
       <button
         onClick={handleLogout}
-        className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-600 transition-all"
+        className="bg-red-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-600 transition-all mx-2 my-2"
       >
         Logout
       </button>

@@ -1,32 +1,19 @@
 const mongoose = require("mongoose");
-
-const userSchema = new mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    role: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user",
-    },
-
     firstName: {
       type: String,
+      required: true,
       trim: true,
     },
     lastName: {
       type: String,
+      required: true,
       trim: true,
     },
     dateOfBirth: {
       type: String,
+      required: true,
       match: /^\d{2}-\d{2}-\d{4}$/,
       validate: {
         validator: function (value) {
@@ -39,6 +26,7 @@ const userSchema = new mongoose.Schema(
     },
     hobby: {
       type: [String],
+      required: true,
     },
     gender: {
       type: String,
@@ -46,15 +34,19 @@ const userSchema = new mongoose.Schema(
     },
     country: {
       type: String,
+      required: true,
     },
     state: {
       type: String,
+      required: true,
     },
     city: {
       type: String,
+      required: true,
     },
     address: {
       type: String,
+      required: true,
       trim: true,
     },
   },

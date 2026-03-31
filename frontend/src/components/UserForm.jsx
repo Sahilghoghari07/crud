@@ -18,7 +18,6 @@ function UserForm({
   users,
   deleteSelected,
 }) {
-  const role = localStorage.getItem("role");
   return (
     <>
       <div className="container mx-auto p-6 max-w-200 border border-gray-200 shadow-xl rounded-2xl mt-5">
@@ -248,7 +247,7 @@ function UserForm({
             </button>
 
             {/* delete checked button  */}
-            {role === "admin" && selectedIds.length > 0 && (
+            {selectedIds.length > 0 && (
               <button
                 type="button"
                 onClick={deleteSelected}

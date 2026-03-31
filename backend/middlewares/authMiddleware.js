@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 exports.authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-
   if (!authHeader) {
     return res.status(401).json({ message: "No token provided" });
   }
@@ -17,11 +16,4 @@ exports.authMiddleware = (req, res, next) => {
   } catch (err) {
     res.status(401).json({ message: "Invalid token" });
   }
-};
-
-exports.isAdmin = (req, res, next) => {
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ message: "Admin only" });
-  }
-  next();
 };

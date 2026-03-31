@@ -1,93 +1,38 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../services/api";
 
-// REGISTER
-export const register = createAsyncThunk(
-  "users/register",
-  async (formData, thunkAPI) => {
-    try {
-      const res = await API.post("/auth/register", formData);
-      return res.data;
-    } catch (err) {
-      console.log(err.response.data);
-      return thunkAPI.rejectWithValue(err.response.data);
-    }
-  },
-);
+export const register = createAsyncThunk("register", async (data) => {
+  const res = await API.post("/auth/register", data);
+  return res.data;
+});
 
-// LOGIN
-export const login = createAsyncThunk(
-  "users/login",
-  async (formData, thunkAPI) => {
-    try {
-      const res = await API.post("/auth/login", formData);
+export const login = createAsyncThunk("login", async (data) => {
+  const res = await API.post("/auth/login", data);
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.data.role);
+  localStorage.setItem("token", res.data.token);
 
-      return res.data.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data);
-    }
-  },
-);
+  return res.data.data;
+});
 
-// FETCH USERS
-export const fetchUsers = createAsyncThunk(
-  "users/fetchUsers",
-  async (_, thunkAPI) => {
-    try {
-      const res = await API.get("/users");
-      return res.data.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message,
-      );
-    }
-  },
-);
+export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
+  const res = await API.get("/users");
+  return res.data.data;
+});
 
-// ADD
-export const addUser = createAsyncThunk(
-  "users/addUser",
-  async (formData, thunkAPI) => {
-    try {
-      const res = await API.post("/users", formData);
-      return res.data.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message,
-      );
-    }
-  },
-);
+export const addUser = createAsyncThunk("addUser", async (data) => {
+  const res = await API.post("/users", data);
+  return res.data.data;
+});
 
-// UPDATE
 export const updateUser = createAsyncThunk(
-  "users/updateUser",
-  async ({ editId, formData }, thunkAPI) => {
-    try {
-      const res = await API.put(`/users/${editId}`, formData);
-      return res.data.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message,
-      );
-    }
+  "updateUser",
+  async ({ editId, formData }) => {
+    const res = await API.put(`/users/${editId}`, formData);
+    return res.data.data;
   },
 );
 
-// DELETE
-export const deleteUser = createAsyncThunk(
-  "users/deleteUser",
-  async (id, thunkAPI) => {
-    try {
-      await API.delete(`/users/${id}`);
-      return id;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message,
-      );
-    }
-  },
-);
+export const deleteUser = createAsyncThunk("deleteUser", async (id) => {
+  await API.delete(`/users/${id}`);
+  return id;
+});

@@ -5,11 +5,11 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/userControllers");
-const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 router.get("/", authMiddleware, getUsers);
 router.post("/", authMiddleware, addUser);
 router.put("/:id", authMiddleware, updateUser);
-router.delete("/:id", authMiddleware, isAdmin, deleteUser);
+router.delete("/:id", authMiddleware, deleteUser);
 
 module.exports = router;

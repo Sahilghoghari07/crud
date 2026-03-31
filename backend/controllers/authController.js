@@ -1,16 +1,16 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const userRegister = require("../models/userRegister");
 
 exports.register = async (req, res) => {
   const { username, password } = req.body;
 
-  const exist = await User.findOne({ username });
+  const exist = await userRegister.findOne({ username });
   if (exist) return res.status(400).json({ message: "User already exists" });
 
   const hashed = await bcrypt.hash(password, 10);
 
-  const user = await User.create({ username, password: hashed });
+  await userRegister.create({ username, password: hashed });
   res
     .status(201)
     .json({ message: "User Registered Successfully", success: true });
@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username });
+  const user = await userRegister.findOne({ username });
   if (!user) return res.status(401).json({ message: "Invalid Credentials" });
 
   const match = await bcrypt.compare(password, user.password);
@@ -31,5 +31,14 @@ exports.login = async (req, res) => {
     { expiresIn: "1d" },
   );
 
-  res.json({ message: "Login Successfully", success: true, token, data: user });
+  res.json({
+    message: "Login Successfully",
+    success: true,
+    token,
+    data: {
+      _id: user._id,
+      username: user.username,
+      role: user.role,
+    },
+  });
 };
