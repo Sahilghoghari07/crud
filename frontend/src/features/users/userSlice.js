@@ -33,7 +33,10 @@ export const userSlice = createSlice({
 
       // ADD
       .addCase(addUser.fulfilled, (state, action) => {
-        state.users.push(action.payload);
+        const exists = state.users.some((u) => u._id === action.payload._id);
+        if (!exists) {
+          state.users.push(action.payload);
+        }
       })
 
       // UPDATE

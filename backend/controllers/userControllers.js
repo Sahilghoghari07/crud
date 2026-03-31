@@ -19,7 +19,7 @@ exports.addUser = async (req, res, next) => {
     const { dateOfBirth } = req.body;
 
     if (!req.body || Object.keys(req.body).length === 0) {
-      return res.status(400).json({ message: "Give body data!", data: null });
+      return res.status(400).json({ message: "Give body data!" });
     }
 
     const [yyyy, mm, dd] = dateOfBirth.split("-");

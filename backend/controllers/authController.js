@@ -1,16 +1,16 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const userRegister = require("../models/userRegister");
+const UserRegister = require("../models/userRegister");
 
 exports.register = async (req, res) => {
   const { username, password } = req.body;
 
-  const exist = await userRegister.findOne({ username });
+  const exist = await UserRegister.findOne({ username });
   if (exist) return res.status(400).json({ message: "User already exists" });
 
   const hashed = await bcrypt.hash(password, 10);
 
-  await userRegister.create({ username, password: hashed });
+  await UserRegister.create({ username, password: hashed });
   res
     .status(201)
     .json({ message: "User Registered Successfully", success: true });
@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { username, password } = req.body;
 
-  const user = await userRegister.findOne({ username });
+  const user = await UserRegister.findOne({ username });
   if (!user) return res.status(401).json({ message: "Invalid Credentials" });
 
   const match = await bcrypt.compare(password, user.password);
