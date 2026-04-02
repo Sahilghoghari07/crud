@@ -16,9 +16,9 @@ exports.getUsers = async (req, res, next) => {
 
 exports.addUser = async (req, res, next) => {
   try {
-    const { dateOfBirth } = req.body;   
-    
-    if(!req.file) {
+    const { dateOfBirth } = req.body;
+
+    if (!req.file) {
       return res.status(400).json({ message: "Profile image is required!" });
     }
 
@@ -31,7 +31,7 @@ exports.addUser = async (req, res, next) => {
 
     const newUser = await User.create({
       ...req.body,
-      avatar: req.file ? req.file.path : "",
+      avatar: req.file.path,
       dateOfBirth: updatedDate,
     });
 
@@ -48,7 +48,7 @@ exports.addUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    let updatedData = { ...req.body };
+    let updatedData = { ...req.body, avatar: req.file?.path };
 
     if (updatedData.dateOfBirth) {
       const [yyyy, mm, dd] = updatedData.dateOfBirth.split("-");
