@@ -24,6 +24,7 @@ const initialValues = {
   state: "",
   city: "",
   address: "",
+  avatar: null,
 };
 
 function Dashboard() {
@@ -52,9 +53,9 @@ function Dashboard() {
 
   // handle input
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
 
-    let updatedForm = { ...formData, [name]: value };
+    let updatedForm = { ...formData, [name]: value, avatar: files ? files[0] : formData.avatar };
 
     // country change
     if (name === "country") {

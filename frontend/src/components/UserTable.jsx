@@ -35,7 +35,7 @@ function UserTable({
               </th>
             )}
 
-            <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">Avatar</th>
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">DOB</th>
             <th className="px-4 py-2">Gender</th>
@@ -68,7 +68,9 @@ function UserTable({
                     }}
                   />
                 </td>
-                <td className="px-4 py-2">{user._id}</td>
+                <td className="px-4 py-2 justify-center flex">
+                  <img src={`http://localhost:5000/uploads/${user.avatar}`} alt={user.firstName} className="w-15 h-15 object-cover rounded-full" />
+                </td>
                 <td className="px-4 py-2 font-medium">{`${user.firstName} ${user.lastName}`}</td>
                 <td className="px-4 py-2">{user.dateOfBirth}</td>
                 <td className="px-4 py-2">{user.gender}</td>

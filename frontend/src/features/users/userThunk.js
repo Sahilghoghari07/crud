@@ -20,14 +20,22 @@ export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
 });
 
 export const addUser = createAsyncThunk("addUser", async (data) => {
-  const res = await API.post("/users", data);
+  const res = await API.post("/users", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data.data;
 });
 
 export const updateUser = createAsyncThunk(
   "updateUser",
   async ({ editId, formData }) => {
-    const res = await API.put(`/users/${editId}`, formData);
+    const res = await API.put(`/users/${editId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res.data.data;
   },
 );

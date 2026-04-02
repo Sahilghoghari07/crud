@@ -31,7 +31,7 @@ exports.addUser = async (req, res, next) => {
 
     const newUser = await User.create({
       ...req.body,
-      avatar: req.file.path,
+      avatar: req.file.filename,
       dateOfBirth: updatedDate,
     });
 
@@ -48,7 +48,7 @@ exports.addUser = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-    let updatedData = { ...req.body, avatar: req.file?.path };
+    let updatedData = { ...req.body, avatar: req.file?.filename };
 
     if (updatedData.dateOfBirth) {
       const [yyyy, mm, dd] = updatedData.dateOfBirth.split("-");

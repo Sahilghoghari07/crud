@@ -10,7 +10,7 @@ const upload = require("../middlewares/upload");
 
 router.get("/", authMiddleware, getUsers);
 router.post("/", authMiddleware, upload.single("avatar"), addUser);
-router.put("/:id", authMiddleware, upload.single("avatar"), updateUser);
+router.put("/:id", authMiddleware, upload.single("avatar"), updateUser); 
 router.delete("/:id", authMiddleware, deleteUser);
 
 module.exports = router;

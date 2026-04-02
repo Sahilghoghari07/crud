@@ -228,6 +228,20 @@ function UserForm({
             )}
           </div>
 
+          {/* avatar image  */}
+          <div className="flex flex-col w-full mt-2">
+            <label htmlFor="avatar" className="mb-1 font-medium">
+              Profile Image
+            </label>
+            <input
+              type="file"
+              name="avatar"
+              id="avatar"
+              onChange={handleChange}
+              className="border border-gray-300 focus:border-blue-400 rounded px-3 py-1.5"
+            />
+          </div>
+
           <div className="flex flex-row w-full gap-4 mt-2">
             {/* reset button */}
             <button
