@@ -16,7 +16,11 @@ exports.getUsers = async (req, res, next) => {
 
 exports.addUser = async (req, res, next) => {
   try {
-    const { dateOfBirth } = req.body;
+    const { dateOfBirth } = req.body;   
+    
+    if(!req.file) {
+      return res.status(400).json({ message: "Profile image is required!" });
+    }
 
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({ message: "Give body data!" });
@@ -27,6 +31,7 @@ exports.addUser = async (req, res, next) => {
 
     const newUser = await User.create({
       ...req.body,
+      avatar: req.file ? req.file.path : "",
       dateOfBirth: updatedDate,
     });
 
